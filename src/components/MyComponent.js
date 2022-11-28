@@ -8,12 +8,20 @@ class MyComponent extends React.Component {
     address: "congdeptrai",
     age: 20
   };
+  handleClick(event) {
+    // console.log(">> click me my button");
+    
+  }
+  handleOnMouseOver(event) {
+    console.log(event.pageX)
+  }
   //JSX 
   render() {
     return (
       <div>
         my name is {this.state.name} and i from {this.state.address}
-      </div>
+        <button onMouseOver={this.handleOnMouseOver}>hover me</button>
+      </div >
     );
   }
 }
