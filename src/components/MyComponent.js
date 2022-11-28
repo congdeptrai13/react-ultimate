@@ -3,13 +3,16 @@
 
 import React from "react";
 class MyComponent extends React.Component {
-
+  state = {
+    name: "cong",
+    address: "congdeptrai",
+    age: 20
+  };
   //JSX 
   render() {
     return (
       <div>
-        My first component
-        {Math.random()}
+        my name is {this.state.name} and i from {this.state.address}
       </div>
     );
   }
