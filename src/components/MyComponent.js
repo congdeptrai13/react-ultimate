@@ -5,18 +5,23 @@ import React from "react";
 import DisplayInfor from "./DisplayInfor";
 import UserInfor from "./UserInfor";
 class MyComponent extends React.Component {
-
+  state = {
+    listUsers: [
+      { id: 1, name: "Hoi Dan IT", age: "23" },
+      { id: 2, name: "cong", age: "24" },
+      { id: 3, name: "congdeptrai", age: "25" },
+    ]
+  }
   //JSX 
   render() {
-    const myAge = 50;
-    const myInfor = ['ab', 'c', 'c'];
+    //dry  : don't repeat yourself
     return (
       <div>
         <UserInfor />
         <br /><br />
-        <DisplayInfor name="Hoi Dan IT" age="30" />
+
+        <DisplayInfor listUsers={this.state.listUsers} />
         <hr />
-        <DisplayInfor name="cong" age={myAge} myInfor={myInfor} />
       </div >
     );
   }

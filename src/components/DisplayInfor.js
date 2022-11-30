@@ -2,14 +2,21 @@ import React from "react";
 class DisplayInfor extends React.Component {
   render() {
     //destructuring array/object
-    const { age, name } = this.props; //object
+    const { listUsers } = this.props; //object
+    //const listUsers = this.props.listUsers;
     //props => viết tắt properties
     return (
       <div>
-        <div>
-          my name is {this.props.name}
-        </div>
-        <div> my age's {this.props.age}</div>
+        {listUsers.map((user) => {
+          console.log(user)
+          return (
+            <div key={user.id}>
+              <div>my name's {user.name}</div>
+              <div>my age's {user.age}</div>
+              <hr />
+            </div>
+          )
+        })}
 
       </div>
     )
