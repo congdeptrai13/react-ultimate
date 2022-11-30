@@ -19,7 +19,7 @@ class DisplayInfor extends React.Component {
     //template + logic js
     return (
       <div className="display-infor-container">
-        <img src={logo} />
+        {/* <img src={logo} /> */}
         <div>
           <span onClick={() => { this.handleShowHide() }}>{this.state.isShowListUser ? "hide" : "show"} list users:</span>
         </div>
@@ -30,8 +30,12 @@ class DisplayInfor extends React.Component {
                 <div key={user.id} className={+user.age > 18 ? "green" : "red"}>
                   <div>my name's {user.name}</div>
                   <div>my age's {user.age}</div>
+                  <div>
+                    <button onClick={() => { this.props.handleDeleteUser(user.id) }}>Delete</button>
+                  </div>
                   <hr />
                 </div>
+
               )
             })}
 
