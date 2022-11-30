@@ -3,7 +3,7 @@
 
 import React from "react";
 import DisplayInfor from "./DisplayInfor";
-import UserInfor from "./UserInfor";
+import AddUserInfor from "./AddUserInfor";
 class MyComponent extends React.Component {
   state = {
     listUsers: [
@@ -12,15 +12,29 @@ class MyComponent extends React.Component {
       { id: 3, name: "congdeptrai", age: "69" },
     ]
   }
+  handleAddNewUser = (userObj) => {
+    let listUserClone = [...this.state.listUsers];
+    listUserClone.unshift(userObj);
+    // this.setState({
+    //   listUsers: [userObj, ...this.state.listUsers]
+    // })
+    this.setState({
+      listUsers: [...this.state.listUsers, userObj],
+    })
+  }
   //JSX 
   render() {
     //dry  : don't repeat yourself
     return (
       <div>
-        <UserInfor />
+        <AddUserInfor
+          handleAddNewUser={this.handleAddNewUser}
+        />
         <br /><br />
 
-        <DisplayInfor listUsers={this.state.listUsers} />
+        <DisplayInfor
+          listUsers={this.state.listUsers}
+        />
       </div >
     );
   }
