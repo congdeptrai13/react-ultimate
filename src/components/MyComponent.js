@@ -1,7 +1,7 @@
 // class component 
 //function component
 
-import React from "react";
+import React, { Fragment } from "react";
 import DisplayInfor from "./DisplayInfor";
 import AddUserInfor from "./AddUserInfor";
 class MyComponent extends React.Component {
@@ -25,17 +25,23 @@ class MyComponent extends React.Component {
   //JSX 
   render() {
     //dry  : don't repeat yourself
+    //convert object to string = JSON.stringify()
     return (
-      <div>
-        <AddUserInfor
-          handleAddNewUser={this.handleAddNewUser}
-        />
-        <br /><br />
+      <>
+        <div className="a">
+          <AddUserInfor
+            handleAddNewUser={this.handleAddNewUser}
+          />
+          <br /><br />
 
-        <DisplayInfor
-          listUsers={this.state.listUsers}
-        />
-      </div >
+          <DisplayInfor
+            listUsers={this.state.listUsers}
+          />
+        </div>
+        <div className="b">
+
+        </div>
+      </>
     );
   }
 }
