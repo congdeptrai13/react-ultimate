@@ -52,10 +52,11 @@ const DisplayInfor = (props) => {
           handleShowHideListUser()
         }}>{isShowHideListUser ? "hide list user" : "show list user"}</span>
       </div>
+      console.log(listUsers)
       {
         isShowHideListUser &&
         <>
-          {listUsers.map((user) => {
+          {listUsers.map((user, index) => {
             return (
               <div key={user.id} className={+user.age > 18 ? "green" : "red"}>
                 <div>my name's {user.name}</div>
@@ -65,7 +66,6 @@ const DisplayInfor = (props) => {
                 </div>
                 <hr />
               </div>
-
             )
           })}
 
