@@ -1,0 +1,16 @@
+Bước 1: Cập nhật Email (hoặc số điện thoại...) của Tài khoản Udemy của bạn, vào file .env
+Thay vào :  UDEMY_IDENTIFY = "youremail@gmail.com"  <= cập nhật vào đây.
+
+Bước 2: Inbox qua Fanpage Facebook Hỏi Dân IT: https://www.facebook.com/askITwithERIC/
+Cú pháp tin nhắn:
+UDEMY_IDENTIFY = <điền_vào_giống_bước_1>
+UDEMY_NAME = <điền_vào_tên_hiển_thị_của_bạn_trên_Udemy>
+
+====
+Mình sẽ kiểm tra thông tin tài khoản Udemy, đồng thời kích hoạt khóa học cho các bạn (phần docker)
+
+
+Bước 3: (chỉ chạy bước này, khi đã nhận được phản hồi kích hoạt khóa học ở bước 2)
+
+docker-compose -p hoidanit up --build
+

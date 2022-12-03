@@ -23,7 +23,8 @@ const MyComponent = (props) => {
     // this.setState({
     //   listUsers: [userObj, ...this.state.listUsers]
     // })
-    setListUsers(userObj, ...listUsers)
+    setListUsers([userObj, listUsers])
+
   }
   const handleDeleteUser = (userId) => {
     let listUsersClone = [...listUsers];
@@ -33,7 +34,7 @@ const MyComponent = (props) => {
     //   listUsers: listUsersClone
     // })
   }
-  //JSX 
+  //JSX
   //dry  : don't repeat yourself
   //convert object to string = JSON.stringify()
   return (

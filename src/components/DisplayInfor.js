@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./DisplayInfor.scss";
 //stateless vs stateful
 // class DisplayInfor extends React.Component {
@@ -38,6 +38,7 @@ import "./DisplayInfor.scss";
 // }
 
 
+
 const DisplayInfor = (props) => {
   const { listUsers } = props; //object
   const [isShowHideListUser, setShowHideListUser] = useState(true);
@@ -45,6 +46,14 @@ const DisplayInfor = (props) => {
   const handleShowHideListUser = () => {
     setShowHideListUser(!isShowHideListUser);
   }
+  console.log("call me render")
+  useEffect(() => {
+    setTimeout(() => {
+      document.title = "cong dep trai"
+    }, 3000)
+    console.log("call me useEffect")
+  }, []
+  );
   return (
     < div className="display-infor-container" >
       <div>
@@ -52,11 +61,10 @@ const DisplayInfor = (props) => {
           handleShowHideListUser()
         }}>{isShowHideListUser ? "hide list user" : "show list user"}</span>
       </div>
-      console.log(listUsers)
       {
         isShowHideListUser &&
         <>
-          {listUsers.map((user, index) => {
+          {listUsers.map((user) => {
             return (
               <div key={user.id} className={+user.age > 18 ? "green" : "red"}>
                 <div>my name's {user.name}</div>
