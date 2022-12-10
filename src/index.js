@@ -8,8 +8,6 @@ import { BrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
 import "nprogress/nprogress.css"
 import { PersistGate } from 'redux-persist/integration/react'
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
