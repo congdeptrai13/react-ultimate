@@ -1,17 +1,35 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { getAllQuizForAdmin } from "../../../../services/apiServices";
+import ModalDeleteQuiz from "./ModalDeleteQuiz";
+import ModalUpdateQuiz from "./ModalUpdateQuiz";
 const TableQuiz = (props) => {
   const [listQuiz, setListQuiz] = useState([]);
+  const [isShowModalUpdateQuiz, setIsShowModalUpdateQuiz] = useState(false);
+  const [isShowModalDeleteQuiz, setIsShowModalDeleteQuiz] = useState(false);
+  const [dataDelete, setDataDelete] = useState({});
+  const [dataUpdate, setDataUpdate] = useState({});
+
   useEffect(() => {
     fetchQuiz();
   }, [])
   const fetchQuiz = async () => {
+    setDataDelete({});
+    setDataUpdate({});
     let res = await getAllQuizForAdmin();
     if (res && res.EC === 0) {
       setListQuiz(res.DT);
     }
-    console.log("res:", res);
+    // console.log("res:", res);
+  }
+  const handleDelete = (quiz) => {
+    // console.log("check quiz", quiz);
+    setDataDelete(quiz);
+    setIsShowModalDeleteQuiz(!isShowModalDeleteQuiz);
+  }
+  const handleUpdate = (quiz) => {
+    setDataUpdate(quiz);
+    setIsShowModalUpdateQuiz(!isShowModalUpdateQuiz);
   }
   return (
     <>
@@ -34,14 +52,30 @@ const TableQuiz = (props) => {
               <td>{item.description}</td>
               <td>{item.difficulty}</td>
               <td style={{ display: "flex", gap: "15px" }}>
-                <button className="btn btn-warning">Edit</button>
-                <button className="btn btn-danger">Delete</button>
+                <button className="btn btn-warning"
+                  onClick={() => handleUpdate(item)}>Edit</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDelete(item)}
+                >Delete</button>
               </td>
             </tr>
           </tbody>)
         })}
       </table>
-
+      <ModalDeleteQuiz
+        show={isShowModalDeleteQuiz}
+        setShow={setIsShowModalDeleteQuiz}
+        dataDelete={dataDelete}
+        setDataUpdate={setDataUpdate}
+        fetchQuiz={fetchQuiz}
+      />
+      <ModalUpdateQuiz
+        show={isShowModalUpdateQuiz}
+        setShow={setIsShowModalUpdateQuiz}
+        dataUpdate={dataUpdate}
+        fetchQuiz={fetchQuiz}
+      />
     </>
   )
 }

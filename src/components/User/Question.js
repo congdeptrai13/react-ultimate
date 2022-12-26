@@ -33,7 +33,7 @@ const Question = (props) => {
             <div key={`answer-${index}`} className="a-child">
               <div className="form-check">
                 <input
-                  className="form-check-input"
+                  className="form-check-input iscorrect"
                   type="checkbox"
                   checked={a.isSelected}
                   onChange={(event) => handleHanleCheckbox(event, a.id, data.questionId)}
