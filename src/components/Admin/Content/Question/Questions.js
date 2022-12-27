@@ -1,18 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import "./Questions.scss"
 import { HiOutlinePlusCircle } from "react-icons/hi";
 import { AiOutlineMinusCircle } from "react-icons/ai";
 import { RiImageAddFill } from "react-icons/ri";
 import { v4 as uuidv4 } from 'uuid';
-import _ from 'lodash';
+import _, { create } from 'lodash';
+import Lightbox from "react-awesome-lightbox";
+import { getAllQuizForAdmin, postCreateNewAnswerForQuestion, postCreateNewQuestionForQuiz } from "../../../../services/apiServices";
+
+
 const Questions = (props) => {
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-  ];
-  const [selectedQuiz, setSelectedQuiz] = useState({});
   const [questions, setQuestions] = useState(
     [
       {
@@ -30,6 +28,31 @@ const Questions = (props) => {
       },
     ]
   )
+
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
+  const [dataImagePreview, setDataImagePreview] = useState({
+    title: "",
+    url: "",
+
+  })
+  const [listQuiz, setListQuiz] = useState([]);
+  const [selectedQuiz, setSelectedQuiz] = useState({});
+  useEffect(() => {
+    fetchQuiz();
+  }, [])
+  const fetchQuiz = async () => {
+    let res = await getAllQuizForAdmin();
+    if (res && res.EC === 0) {
+      let newQuiz = res.DT.map(item => {
+        return {
+          value: item.id,
+          label: `${item.id} - ${item.description}`,
+        }
+      })
+      setListQuiz(newQuiz);
+    }
+    // console.log("res:", res);
+  }
   const handleAddRemoveQuestion = (type, id) => {
     if (type === 'ADD') {
       const newQuestion = {
@@ -110,8 +133,35 @@ const Questions = (props) => {
       setQuestions(questionsClone);
     }
   }
-  const handleSubmitQuestionForQuiz = () => {
-    console.log("questions:", questions);
+  const handleSubmitQuestionForQuiz = async () => {
+    //todo
+    //validate data
+
+    //submit questions
+    await Promise.all(questions.map(async (question) => {
+      const q = await postCreateNewQuestionForQuiz(
+        +selectedQuiz.value,
+        question.description,
+        question.imageFile
+      );
+      await Promise.all(question.answers.map(async (answer) => {
+        await postCreateNewAnswerForQuestion(answer.description,
+          answer.isCorrect,
+          q.DT.id)
+      }))
+    }));
+    //submit answers
+  }
+  const handlePreviewImage = (questionId) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex(item => item.id === questionId);
+    if (index > -1) {
+      setDataImagePreview({
+        url: URL.createObjectURL(questionsClone[index].imageFile),
+        title: questionsClone[index].imageName
+      })
+      setIsPreviewImage(true);
+    }
   }
   return (
     <div className="questions-container">
@@ -125,13 +175,14 @@ const Questions = (props) => {
           <Select
             defaultValue={selectedQuiz}
             onChange={setSelectedQuiz}
-            options={options}
+            options={listQuiz}
           />
         </div>
         <div className='mt-3 mb-2'>
           Add questions:
         </div>
-        {questions && questions.length > 0
+        {
+          questions && questions.length > 0
           && questions.map((question, index) => {
             return (
               <div key={question.id} className='q-main mb-4'>
@@ -155,7 +206,14 @@ const Questions = (props) => {
                       hidden
                       onChange={(event) => handleOnChangeFileQuestion(question.id, event)}
                     />
-                    <span>{question.imageName ? question.imageName : "0 file is uploaded"}</span>
+                    <span>{question.imageName
+                      ?
+                      <span
+                        onClick={() => handlePreviewImage(question.id)}
+                        style={{ cursor: "pointer" }}
+                      >{question.imageName}</span>
+                      :
+                      "0 file is uploaded"}</span>
                   </div>
                   <div className='btn-add'>
                     <span onClick={() => handleAddRemoveQuestion('ADD', '')}>
@@ -167,39 +225,41 @@ const Questions = (props) => {
                       </span>}
                   </div>
                 </div>
-                {question.answers && question.answers.length > 0 && question.answers.map((answer, index) => {
-                  return (
-                    <div key={answer.id} className='answers-content'>
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        checked={answer.isCorrect}
-                        onChange={(event) =>
-                          handleAnswerQuestion('CHECKBOX', answer.id, question.id, event.target.checked)}
-                      />
-                      <div className="form-floating answer-name">
+                {
+                  question.answers && question.answers.length > 0 && question.answers.map((answer, index) => {
+                    return (
+                      <div key={answer.id} className='answers-content'>
                         <input
-                          type="type"
-                          className="form-control"
-                          value={answer.description}
+                          className="form-check-input"
+                          type="checkbox"
+                          checked={answer.isCorrect}
                           onChange={(event) =>
-                            handleAnswerQuestion('INPUT', answer.id, question.id, event.target.value)}
+                            handleAnswerQuestion('CHECKBOX', answer.id, question.id, event.target.checked)}
                         />
-                        <label >Answers {index + 1}</label>
-                      </div>
-                      <div className='btn-group'>
-                        <span onClick={() => handleAddRemoveAnswer('ADD', question.id)}>
-                          <HiOutlinePlusCircle className='icon-add' />
-                        </span>
-                        {question.answers.length > 1 &&
-                          <span onClick={() => handleAddRemoveAnswer('REMOVE', question.id, answer.id)}>
-                            <AiOutlineMinusCircle className='icon-remove' />
+                        <div className="form-floating answer-name">
+                          <input
+                            type="type"
+                            className="form-control"
+                            value={answer.description}
+                            onChange={(event) =>
+                              handleAnswerQuestion('INPUT', answer.id, question.id, event.target.value)}
+                          />
+                          <label >Answers {index + 1}</label>
+                        </div>
+                        <div className='btn-group'>
+                          <span onClick={() => handleAddRemoveAnswer('ADD', question.id)}>
+                            <HiOutlinePlusCircle className='icon-add' />
                           </span>
-                        }
+                          {question.answers.length > 1 &&
+                            <span onClick={() => handleAddRemoveAnswer('REMOVE', question.id, answer.id)}>
+                              <AiOutlineMinusCircle className='icon-remove' />
+                            </span>
+                          }
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
+                    )
+                  })
+                }
               </div>
             )
           })
@@ -214,7 +274,16 @@ const Questions = (props) => {
           </div>
         }
       </div>
-    </div>
+      {
+        isPreviewImage === true &&
+        <Lightbox
+          image={dataImagePreview.url}
+          title={dataImagePreview.title}
+          onClose={() => setIsPreviewImage(false)}
+        >
+        </Lightbox>
+      }
+    </div >
   )
 }
 export default Questions;
