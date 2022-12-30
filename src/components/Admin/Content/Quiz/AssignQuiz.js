@@ -26,7 +26,7 @@ const AssignQuiz = (props) => {
   }
   const fetchUser = async () => {
     let res = await getAllUsers();
-    console.log(res);
+    // console.log(res);
     if (res && res.EC === 0) {
       let newUser = res.DT.map(item => {
         return {

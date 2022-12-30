@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { getDataQuiz, postSubmitQuiz } from "../../services/apiServices";
+import RightContent from "./Content/RightContent";
 import "./DetailQuiz.scss"
 import ModalResult from "./ModalResult";
 import Question from "./Question";
@@ -157,7 +158,10 @@ const DetailQuiz = (props) => {
         </div>
       </div>
       <div className="right-content">
-        count down
+        <RightContent
+          dataQuiz={dataQuiz}
+          handleFinishQuiz={handleFinishQuiz}
+        />
       </div>
       <ModalResult
         show={isShowModalResult}
