@@ -111,7 +111,7 @@ const DetailQuiz = (props) => {
       payload.answers = answers;
       //submit api
       let res = await postSubmitQuiz(payload);
-      console.log("check res", res);
+      // console.log("check res", res);
       if (res && res.EC === 0) {
         setIsShowModalResult(true);
         setDataModalResult({
@@ -161,6 +161,7 @@ const DetailQuiz = (props) => {
         <RightContent
           dataQuiz={dataQuiz}
           handleFinishQuiz={handleFinishQuiz}
+          setIndex={setIndex}
         />
       </div>
       <ModalResult
