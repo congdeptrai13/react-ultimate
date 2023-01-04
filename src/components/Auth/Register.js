@@ -4,6 +4,7 @@ import { postRegister } from "../../services/apiServices";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import Language from "../Header/Language";
 const Register = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +41,7 @@ const Register = (props) => {
   return (
     <>
       <div className="register-container">
+        <Language />
         <div className="title col-6 mx-auto">
           Đăng Kí
         </div>

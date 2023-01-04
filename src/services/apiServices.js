@@ -104,4 +104,8 @@ const postUpsertQA = (data) => {
   return axios.post(`api/v1/quiz-upsert-qa`, { ...data });
 }
 
-export { postCreateNewUsers, getAllUsers, putUpdateUsers, deleteUsers, getUserWithPaginate, postLogin, postRegister, getQuizByUser, getDataQuiz, postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin, deleteQuizForAdmin, putUpdateQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion, postAssignQuiz, getQuizWithQA, postUpsertQA };
+const logout = (email, refresh_token) => {
+  return axios.post(`api/v1/logout`,
+    { email, refresh_token });
+}
+export { postCreateNewUsers, getAllUsers, putUpdateUsers, deleteUsers, getUserWithPaginate, postLogin, postRegister, getQuizByUser, getDataQuiz, postSubmitQuiz, postCreateNewQuiz, getAllQuizForAdmin, deleteQuizForAdmin, putUpdateQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion, postAssignQuiz, getQuizWithQA, postUpsertQA, logout };

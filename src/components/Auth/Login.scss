@@ -16,8 +16,11 @@
   }
   .header{
     height: 45px;
-    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: right;
     padding: 5px 100px 0 100px;
+    gap:10px;
     button{
       padding: 3px 15px;
       margin-left: 15px;
